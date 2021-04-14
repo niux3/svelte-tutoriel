@@ -1,4 +1,4 @@
-# svelte-tutoriel
+# svelte/sapper
 
 Table des matières
 - [Votre première application Svelte](./chap-1.md)
