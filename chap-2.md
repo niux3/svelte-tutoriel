@@ -13,3 +13,14 @@ Le css peut être global et affecte tous les composants. Le plus souvent, il est
 À la fin de ce chapitre, vous serez en mesure de créer des composants qui peuvent être utilisés dans n'importe quelle application Svelte.
 
 ## Le contenu d'un fichier svelte
+
+Les composants Svelte sont définis par le contenu d'un fichier, et non par un conteneur JavaScript dans le fichier, comme une classe, une fonction ou un objet littéral. La création d'un composant Svelte est aussi simple que de créer un fichier portant l'extension .svelte et respectant certaines règles de base. Ces fichiers doivent se trouver dans le répertoire src ou dans un sous-dossier.
+
+Les fichiers .svelte peuvent contenir :
+- au maximum un élément script context="module"
+- un élément de type script
+- un élément de type style
+- un nombre quelconque d'éléments HTML qui peuvent apparaître dans l'élément body.
+
+Chacun d'entre eux est facultatif et ces éléments peuvent apparaître
+dans n'importe quel ordre.
