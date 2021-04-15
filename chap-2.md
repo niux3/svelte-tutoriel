@@ -144,7 +144,7 @@ Voici un exemple plus concret du passage de valeur à un composant svelte :
 />
 ```
 
-> REMAQUE: Vous avez peut être remqué un @html à l'intérieur des accolades ? En effet, si vous l'omettez, le html au sein de l'expression JavaScript entre les accolades ne sera pas interprété.
+> REMAQUE: Vous avez peut être remarqué un @html à l'intérieur des accolades ? En effet, si vous l'omettez, le html au sein de l'expression JavaScript entre les accolades ne sera pas interprété.
 
 Parfois certains composants récupèrent tellement de props que votre fichier va devenir illisible. Vous pouvez raccourcir aisément cette écriture.
 
@@ -196,4 +196,85 @@ Vous pouvez le nommez comme vous voulez. Par convention, il est préférable d'u
 
 ```javascript
 import UnComposant from "./quelque-chose.svelte"
+```
+
+### le css et la class conditionnelle
+
+Admettons que suivant le contexte vous ayez besoin de changer la couleur du message. Rien de plus facile. Il vous suffit de binder la class :
+
+```html
+<script>
+    let status = 200;
+    let message = "un message"
+</script>
+<label>
+    <span>changer le statut</span>
+    <input type="text" bind:value={status}>
+</label>
+
+<div class:error={status >= 400 }>{message}</div>
+
+<style>
+    .error {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+```  
+
+Il existe d'autres manières pour arriver au même résultat :
+
+```html
+<div class={status >= 400 ? 'error' : ''}>{message}</div>
+```
+
+ou encore ceci avec une syntaxe plus condensée dans le code html:
+
+```html
+<script>
+    let status = 200;
+    $: error = status > 400
+    //etc.
+</script>
+<!-- etc. -->
+<div class:error>{message}</div>
+<!-- etc. -->
+```
+
+### Appliquer une logique dans un composant
+
+Vous avez 3 manières d'appliquer la logique dans un composant :
+- les fonctions ou expression JS dans l'élément script
+- des expressions entres les accolades dans un élément html
+- l'utilisation de blocs de contrôles spécifiques à svelte (Ce point fera l'objet d'un cours à part entière)
+
+Dans l'exemple précédent, la logique est appliqué à l'instruction réactive.
+
+
+### global.css et les styles au sein d'un composant
+
+Dans une application svelte, vous avez 2 sortes de css. Le fichiers global.css qui se trouve dans le dossier public. Vous avez aussi les styles déclarés dans le composant. Lorsque vous remarquez qu'une règle css est commune, il est préférable de l'ajouter dans le global.css. **Le css appliqué au sein d'un composant n'affectera pas les autres composants**.
+
+Vous pouvez utiliser le sass. Cependant, il va falloir configurer rollup.config.js ou webpack.config.js. Une fois configurer, vous n'avez plus qu'à déclarer votre élément style comme ceci :
+
+```html
+<style lang="scss">
+/* etc. */
+</style>
+```
+
+### Les instructions réactives
+
+
+
+
+
+```html
+<script>
+let diameter = 0;
+let height = 0;
+
+$ area = Math.PI * diameter;
+$ volume = area
+</script>
 ```
