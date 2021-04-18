@@ -1,6 +1,6 @@
 # Comment créer un composant ?
 
-Dans ce chapitre, nous allons approfondir la création des composants en créant des fichiers .svelte. Ces fichiers permettent d'implémenter en JavaScript la logique et l'état du HTML. Le css quant à lui, stylise les éléments au sein du composant.
+Dans ce cours, nous allons approfondir la création des composants en créant des fichiers .svelte. Ces fichiers permettent d'implémenter en JavaScript la logique et l'état du HTML. Le css quant à lui, stylise les éléments au sein du composant.
 
 Les composants sont composés de parties étroitement liées à l'interface utilisateur. Ils scindent une interface utilisateur potentiellement réutilisables. Certains composants représentent des pages entières, tandis que d'autres sont utilisés dans des pages. Par exemple, une page qui affiche une liste de courses peut être implémentée par un composant du nom "ShoppingList". Ce composant peut rendre chaque élément dans un autre composant plus petit. ce petit composant pourrait se nommer "item" par exemple. Les composants svelte ont une syntaxe similaire au HTML.
 
@@ -366,7 +366,7 @@ Comment déclarer une instruction réactive ? Dans Svelte, il vous suffit de sai
 
 ### Les modules de contexte
 
-Parfois, vous souhaitez mutualiser une fonction ou autres au travers de différents composants. Rien du plus simple, il vous suffit de déclarer un un élément script avec un attribut "context" et sa valeur sera "module". Je vous invite à lire le code qui suit :
+Parfois, vous souhaitez mutualiser une fonction ou autres au travers de différents composants. Rien du plus simple, il vous suffit de déclarer un élément script avec un attribut "context" et sa valeur sera "module". Je vous invite à lire le code qui suit :
 
 fichier UnCompsant.svelte
 ```html
