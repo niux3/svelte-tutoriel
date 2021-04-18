@@ -33,6 +33,10 @@ La structure classique d'un fichier svelte est ainsi :
 // code javascript du composant.
 </script>
 
+<script context="module">
+// code javascript mutalisé du composant.
+</script>
+
 <!-- le html du composant  -->
 
 <style>
@@ -265,16 +269,166 @@ Vous pouvez utiliser le sass. Cependant, il va falloir configurer rollup.config.
 
 ### Les instructions réactives
 
-
-
+Comment déclarer une instruction réactive ? Dans Svelte, il vous suffit de saisir "$:" suivant de la variable à calculer. Si vous devez faire un calcul en fonction d'une variable d'état, il est préférable d'utiliser une instruction de type réactive. Pour illustrer mon propos, je vous invite à saisir et à tester le code ci-dessous.
 
 
 ```html
 <script>
-let diameter = 0;
-let height = 0;
+	let rayon = 5;
+	let height = 20;
+	$: diameter = rayon * 2;
+	$: area = Math.PI * diameter;
+	$: volume = area * height;
 
-$ area = Math.PI * diameter;
-$ volume = area
+	$: posX1 = 250 - (diameter * Math.PI)
+	$: posX2 = 250 + (diameter * Math.PI)
+
 </script>
+<div class="global">
+    <div class="data">
+        <div>
+            <div class="input text">
+            	<label>
+            		<strong>rayon</strong><input type="range" min="5" max="35" bind:value={rayon} />
+            	</label>
+            </div>
+            <div class="input text">
+            	<label>
+            		<strong>height</strong><input type="range" min="20" max="300" bind:value={height} />
+            	</label>
+            </div>
+        </div>
+        <div class="result">
+            <dl>
+                <dt>rayon : </dt>
+                <dd>{rayon}</dd>
+                <dt>diametre : </dt>
+                <dd>{diameter}</dd>
+                <dt>aire : </dt>
+                <dd>{area.toFixed(2)}</dd>
+                <dt>volume : </dt>
+                <dd>{volume.toFixed(2)}</dd>
+            </dl>
+        </div>
+    </div>
+    <svg height="500" width="500" viewBox="0 0 500 500">
+      <ellipse cx="250" cy={height + 80} rx={area} ry="10" />
+      <rect x={posX1} y="80" width={area * 2} height={height} />
+      <line x1={posX1} y1="80" x2={posX1} y2={height + 80} />
+      <line x1={posX2} y1="80" x2={posX2} y2={height + 80} />
+      <ellipse cx="250" cy="80" rx={area} ry="10" />
+    </svg>
+</div>
+
+<style>
+    .global{
+        width: 75%;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        grid-column-gap: 25px;
+    }
+
+    .global .input{
+        text-align: center;
+        padding: 25px;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+
+    .global .input strong{
+        display: block;
+    }
+
+    dt{
+        float: left;
+        margin-right: 15px;
+        font-weight: bold;
+    }
+
+    ellipse{
+        fill:white;
+        stroke:orangered;
+        stroke-width:2
+    }
+
+    line{
+        stroke:orangered;
+        stroke-width:2
+    }
+
+    rect{
+        fill:white;
+    }
+</style>
+```
+
+### Les modules de contexte
+
+Parfois, vous souhaitez mutualiser une fonction ou autres au travers de différents composants. Rien du plus simple, il vous suffit de déclarer un un élément script avec un attribut "context" et sa valeur sera "module". Je vous invite à lire le code qui suit :
+
+fichier UnCompsant.svelte
+```html
+<script context="module">
+    let pow = a => a * a;
+</script>
+```
+
+fichier UnAutreCompposant.svelte
+```html
+<script>
+    import onMount from 'svelte';
+    import {pow} from './UnCompsant.svelte'
+
+    onMount = ()=>{
+        let resultPow = pow(3)
+        console.log(resultPow)
+    }
+</script>
+```
+
+### créer un composant
+
+Nous allons finir ce cours par créer un composant et ce dernier est quelque chose de classique. Si vous avez lu le cour, vous ne devriez pas être trop perdu. Nous verrons dans d'autres cours, les notions de passage de variables via les event ou les structures de contrôle.
+
+
+fichier Select.svelte
+```html
+<script>
+    export let options;
+
+    import {createEventDispatcher} from 'svelte';
+
+    let dispatch = createEventDispatcher();
+
+</script>
+
+<select on:change={event => dispatch('select', event.target.value)}>
+    {#each options as option}
+        <option value={option.label.toLowerCase()}>{option.label}</option>
+    {/each}
+</select>
+```
+
+fichier App.svelte
+```html
+<script>
+    import Select from './Select.svelte';
+
+    let selected;
+    let options = [
+        {label: 'Vert'},
+        {label: 'Jaune'},
+        {label: 'Rouge'},
+        {label: 'Orange'},
+        {label: 'Violet'},
+        {label: 'Rose'},
+    ];    
+</script>
+
+<Select {options} on:select={e => select = e.detail} />
+{#if selected}
+<p>vous avez sélectionné la couleur : {selected}</p>
+{/if}
 ```
