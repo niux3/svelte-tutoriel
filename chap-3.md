@@ -184,7 +184,7 @@ Si tout va bien, votre terminal va vous proposez d'aller sur une url.
 
 ## Gérer les promesses
 
-Nous abordons le dernier type de structure de contrôle. Celle ci est un peu spécial si vous n'êtes pas familié avec les dernières spécificités du Javascript. Il faut d'abords connaître [les promesses](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Promise). Bien que vous pouvez vous en créer très facilement avec l'utilisation de l'objet [XMLHttRequest](https://developer.mozilla.org/fr/docs/Web/API/XMLHttpRequest), je vous recommande vivement de regarder [fetch](https://developer.mozilla.org/fr/docs/Web/API/Fetch_API). Vous verrez que les requêtes ajax vous serons très agréable une fois que vous aurez dompté la bête. Tout d'abords, nous avons dans le projet, ce fichier :
+Nous abordons le dernier type de structure de contrôle. Celle ci est un peu spécial si vous n'êtes pas familié avec les dernières spécificités du Javascript. Il va falloir d'abords connaître [les promesses](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/Promise). Bien que vous puissiez vous en créer très facilement avec l'utilisation de l'objet [XMLHttRequest](https://developer.mozilla.org/fr/docs/Web/API/XMLHttpRequest), je vous recommande vivement de regarder [fetch](https://developer.mozilla.org/fr/docs/Web/API/Fetch_API). Vous verrez que les requêtes ajax vous seront très agréables une fois que vous aurez dompté la bête. Tout d'abords, nous avons dans le projet, ce fichier :
 
 
 public/data.json
@@ -238,3 +238,5 @@ App.svelte
 
 <Navigation {data} />
 ```
+
+Les structures de contrôle dans Svelte sont assez simples à appréhender finalement. Dans le prochain cours, nous aborderons plus en détail les interactions entres les composants. 
