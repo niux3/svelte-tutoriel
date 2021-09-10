@@ -128,12 +128,12 @@ Voici un exemple plus concret du passage de valeur à un composant svelte :
         "date anniversaire": 'July 20, 1970 00:20:18',
         "poids": 80
     }
-    let beOfAge = calculateBirth() > 18? true : false;
 	let calculateBirth = () =>{
         let now = new Date().getFullYear()
         let userBirthDay = new Date(description["date anniversaire"]).getFullYear();
 		return  now - userBirthDay
 	}
+    let beOfAge = calculateBirth() > 18? true : false;
     let hobbies = [ "le cinéma", "écouter de la musique", "la photo", "l'informatique" ]
 </script>
 
