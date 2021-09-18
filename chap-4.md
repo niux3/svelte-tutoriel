@@ -90,6 +90,7 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
     let choiceHasHobbies = '';
     let choicesHobbies = [];
     let message = "";
+    let send = false;
     let onSubmit = (e) =>{
         e.preventDefault();
 		let output = "";
@@ -105,9 +106,14 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
         }
         output += `Votre inscription est ${accept?'active':'inactive'}.`
 		message = output
+        send = true;
+    }
+    let goBack = (e)=>{
+        send = false;
     }
 </script>
 
+{#if !send}
 <form on:submit={onSubmit}>
     <p class="input text">
         <label for="name">Votre nom</label>
@@ -149,5 +155,8 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
         <button type="submit">envoyer</button>
     </p>
 </form>
+{:else}
 <p>{message}</p>
+<p><button on:click={goBack}>revenir</button></p>
+{/if}
 ```
