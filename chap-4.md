@@ -94,7 +94,7 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
     }
 </script>
 
-<form on:submit={e => onSubmit(e)}>
+<form on:submit={onSubmit}>
     <p class="input text">
         <label for="name">Votre nom</label>
         <input type="text" id="name" bind:value={name}>
