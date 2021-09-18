@@ -73,7 +73,7 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
 
 ```html
 <script>
-    let colors = ['cyan', 'magenta', 'jaune', 'noir'];
+    let hobbies = ['cinéma', 'voyage', 'musique', 'théatre', 'restaurant', 'bar', 'couture'];
     let accept = false;
     let name = '';
     let days = [
@@ -85,12 +85,26 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
         'samedi',
         'dimanche',
     ];
-    let choicesColors = [];
+    let hasHobbies = ['oui', 'non'];
     let daySelected = ""
-    let send = false;
+    let choiceHasHobbies = '';
+    let choicesHobbies = [];
+    let message = "";
     let onSubmit = (e) =>{
-        send = true;
         e.preventDefault();
+		let output = "";
+        if(name !== ""){
+            output += `Votre nom est ${name}. `
+        }
+
+        if(days[daySelected] !== undefined){
+            output += `Vous avez sélectionné le ${days[daySelected]}. `
+        }
+        if(choiceHasHobbies == "oui" && choicesHobbies.length){
+            output += `Vos loisirs préférés sont : ${choicesHobbies.join(', ')}. `;
+        }
+        output += `Votre inscription est ${accept?'active':'inactive'}.`
+		message = output
     }
 </script>
 
@@ -99,12 +113,8 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
         <label for="name">Votre nom</label>
         <input type="text" id="name" bind:value={name}>
     </p>
-    <p class="input checkbox">
-        <input type="checkbox" id="accept" bind:checked={accept}>
-        <label for="accept">accepter inscription</label>
-    </p>    
     <p class="input select">
-        <label for="days">jour de la semaine</label>
+        <label for="days">jour de la semaine préféré</label>
         <select name="days" id="days" bind:value={daySelected}>
             <option value="">choisir un jour</option>
             {#each days as day, index}
@@ -112,20 +122,32 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
             {/each}
         </select>
     </p>
+    <p>
+        {#each hasHobbies as hasHobby, index}
+        <span class="input radio">
+            <input type="radio" id={'__'+index} value={hasHobby} bind:group={choiceHasHobbies} />
+            <label for={'__'+index}>{hasHobby}</label>
+        </span>
+        {/each}
+    </p>
+    {#if choiceHasHobbies == "oui"}
     <fieldset>
         <legend>vos couleurs préférées</legend>
-        {#each colors as color, index}
+        {#each hobbies as hobbie, index}
         <p class="input checkbox">
-            <input type="checkbox" id={'_'+index} value={color} bind:group={choicesColors} />
-            <label for={'_'+index}>{color}</label>
+            <input type="checkbox" id={'_'+index} value={hobbie} bind:group={choicesHobbies} />
+            <label for={'_'+index}>{hobbie}</label>
         </p>
         {/each}
     </fieldset>
+    {/if}
+    <p class="input checkbox">
+        <input type="checkbox" id="accept" bind:checked={accept}>
+        <label for="accept">accepter inscription</label>
+    </p>
     <p class="input submit">
         <button type="submit">envoyer</button>
     </p>
 </form>
-{#if send}
-<p>votre nom est {name} et vous avez sélectionné le {days[daySelected]}. Votre inscription est {#if accept}active{:else}inactive{/if}. Vos couleurs préférées sont : {choicesColors.join(', ')}</p>
-{/if}
+<p>{message}</p>
 ```
