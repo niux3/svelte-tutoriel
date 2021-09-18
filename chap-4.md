@@ -54,3 +54,78 @@ App.svelte
 <button on:click={e => display = !display}>affiche/masque</button>
 <Message toggleDisplay={display} />
 ```
+
+**Attention** : Lorsqu'un composant parent transmet une nouvelle valeur de prop à un composant enfant, la valeur est mise à jour. En outre, si une opération quelconque est effectuée sur cette valeur de cette props, vous n'obtiendrez pas la valeur escomptée au final. Il vous faudra utiliser une intstruction réactive ($: ....)
+
+### Les directives
+
+Comme dans beaucoup de framework JS frontend il y a un type d'attributs d'un composant qui se nomme les directives. C'est un attribut un peu spécial qui permet d'améliorer l'attribut natif la plupart du temps. Avec svelte, on déclare le nom de la directive suivi ou précédé par 2 points.
+
+1. La directive **bind** lie une valeur de prop à une variable.
+2. En fonction de la valeur d'une variable, la directive **class** permet de dynamiser l'attribut class.
+3.La directive **on** permet de mettre en place des écouteurs ([HTMLElement.addEventListener()](https://developer.mozilla.org/fr/docs/Web/API/EventListener))
+4. La directive **use** spécifie une fonction qui sera transmise au DOM
+5. **animate , transition , in, out** sont des directives pour annimer vos composants
+
+#### La directive bind dans un formulaire
+
+Afin de bien comprendre comment fonctionne la directive bind dans un formulaire, il est préférable de lire et de tester ce script :
+
+```html
+<script>
+    let colors = ['cyan', 'magenta', 'jaune', 'noir'];
+    let accept = false;
+    let name = '';
+    let days = [
+        'lundi',
+        'mardi',
+        'mercredi',
+        'jeudi',
+        'vendredi',
+        'samedi',
+        'dimanche',
+    ];
+    let choicesColors = [];
+    let daySelected = ""
+    let send = false;
+    let onSubmit = (e) =>{
+        send = true;
+        e.preventDefault();
+    }
+</script>
+
+<form on:submit={e => onSubmit(e)}>
+    <p class="input text">
+        <label for="name">Votre nom</label>
+        <input type="text" id="name" bind:value={name}>
+    </p>
+    <p class="input checkbox">
+        <input type="checkbox" id="accept" bind:checked={accept}>
+        <label for="accept">accepter inscription</label>
+    </p>    
+    <p class="input select">
+        <label for="days">jour de la semaine</label>
+        <select name="days" id="days" bind:value={daySelected}>
+            <option value="">choisir un jour</option>
+            {#each days as day, index}
+            <option value={index}>{day}</option>
+            {/each}
+        </select>
+    </p>
+    <fieldset>
+        <legend>vos couleurs préférées</legend>
+        {#each colors as color, index}
+        <p class="input checkbox">
+            <input type="checkbox" id={'_'+index} value={color} bind:group={choicesColors} />
+            <label for={'_'+index}>{color}</label>
+        </p>
+        {/each}
+    </fieldset>
+    <p class="input submit">
+        <button type="submit">envoyer</button>
+    </p>
+</form>
+{#if send}
+<p>votre nom est {name} et vous avez sélectionné le {days[daySelected]}. Votre inscription est {#if accept}active{:else}inactive{/if}. Vos couleurs préférées sont : {choicesColors.join(', ')}</p>
+{/if}
+```
