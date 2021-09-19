@@ -212,3 +212,29 @@ Le montant total est de {grandTotal.toFixed(2)}
 ```
 
 ### Les slots
+
+SvelteJS implémente une variante du système de slot des [webcomponents](https://github.com/WICG/webcomponents/blob/gh-pages/proposals/Slots-Proposal.md). Ce système permet d'injecter du contenu (composant, texte, etc.) à l'intéreur d'un composant enfant.
+
+app.svelte
+```html
+<script>
+import User from './User.svelte'
+</script>
+
+
+<User>
+	<div slot="fullname">Denis Michu</div>
+	<div slot="address">123, rue de quelque chose</div>
+	<div slot="zipcode">12345</div>
+	<div slot="city">Une ville</div>
+</User>
+```
+
+User.svelte
+```html
+<div>
+	<slot name="fullname">valeur par défaut</slot>
+	<slot name="address" />
+	<slot name="zipcode" /><slot name="city" />
+</div>
+```
