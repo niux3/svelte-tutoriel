@@ -101,9 +101,11 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
         if(days[daySelected] !== undefined){
             output += `Vous avez sélectionné le ${days[daySelected]}. `
         }
+
         if(choiceHasHobbies == "oui" && choicesHobbies.length){
             output += `Vos loisirs préférés sont : ${choicesHobbies.join(', ')}. `;
         }
+
         output += `Votre inscription est ${accept?'active':'inactive'}.`
 		message = output
         send = true;
@@ -160,3 +162,53 @@ Afin de bien comprendre comment fonctionne la directive bind dans un formulaire,
 <p><button on:click={goBack}>revenir</button></p>
 {/if}
 ```
+
+##### bind:this
+
+La directive bind:this est un cas un peu spécial. Ça va définir la reférence de la variable ou des variable à l'élément enfant. Ainsi, nous pouvons manipuler le DOM parent avec ces variables.
+
+TaxeCalculator.svelte
+```html
+<script>
+export const taxRate = 0.25;
+let price;
+let prices = [];
+$: total = prices.reduce((a, b) => a + b, 0);
+
+function add() {
+	prices = [...prices, price]; // insère et met à jour la variable prices !!!
+	price = '';
+}
+export const getGrandTotal = () => total * (1 + taxRate);
+</script>
+
+<input type="number" bind:value={price} />
+<button on:click={add}>Add</button>
+{#each prices as price}
+	<div>{price}</div>
+{/each}
+<hr>
+<p>Total {total} avec un taux {(taxRate * 100).toFixed(2)}%</p>
+```
+
+app.svelte
+```html
+<script>
+import TaxeCalculator from './TaxeCalculator.svelte'
+let taxecalculator, taxRate = 0, grandTotal = 0;
+function update() {
+	taxRate = taxecalculator.taxRate;
+	grandTotal = taxecalculator.getGrandTotal();
+}
+</script>
+
+<TaxeCalculator bind:this={taxecalculator} />
+
+<button on:click={update}>Update</button>
+<div>
+Le taux est de {(taxRate * 100).toFixed(2)}%.
+Le montant total est de {grandTotal.toFixed(2)}
+</div>
+```
+
+### Les slots
