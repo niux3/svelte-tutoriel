@@ -241,7 +241,7 @@ User.svelte
 
 ### Les événements
 
-Un composant Svelte peut utiliser n'importe quel type d'événements. À l'intérieur de la déclaration d'un événement, vous pouvez placer une référence à une méthode, mais aussi, vous pouvez directement attribuer une valeur à une variable précédemment déclarée dans le bloc <script>. Sachez aussi que vous pouvez cumuler le même type d'événement au sein d'un composant.
+Un composant Svelte peut utiliser n'importe quel type d'événements. À l'intérieur de la déclaration d'un événement, vous pouvez placer une référence à une méthode, mais aussi, vous pouvez directement attribuer une valeur à une variable précédemment déclarée dans le bloc \<script\>. Sachez aussi que vous pouvez cumuler le même type d'événement au sein d'un composant.
 
 ```html
 <script>
@@ -258,3 +258,89 @@ let faitAutreChose = (e) => uneAutreVar = "encore une valeur";
 #### le dispatch
 
 Le dispatch est un système créant un événement personnalisé. Il est très utile lorsque l'on souhaite remonter l'événement à l'élément parent.
+
+Buttons.svelte
+```html
+<script>
+	import {createEventDispatcher} from 'svelte';
+	const dispatch = createEventDispatcher();
+	export let labels;
+	export let value;
+</script>
+
+{#each labels as label}
+	<button class:selected={label === value} on:click={() => dispatch('select', label)}>{label}</button>
+{/each}
+<style>
+	.selected {
+		background-color: darkgray;
+		color: white;
+	}
+</style>
+```
+
+app.svelte
+```html
+<script>
+	import Buttons from './Buttons.svelte';
+	let civilities = ['Mademoiselle', 'Madame', 'Monsieur'];
+	let civility = '';
+	let handleSelect = event => civility = event.detail;
+</script>
+<Buttons labels={civilities} value={civility} on:select={handleSelect} />
+{#if civility}
+<div>vous avez choisi {civility}.</div>
+{/if}
+```
+
+#### Les event:modifier
+
+La directive on: bénéficie d'un système de filtres afin d'ajouter des comportements complémentaires à l'événement.
+
+- **once** : permet d'utiliser une seul fois l'événement
+- **preventDefault** : permet par exemple de stopper le cycle de vie d'une soumission d'un formulaire
+- **stopPropagation** : permet d'éviter de propager l'événement aux éléments parents
+
+### Les contextes
+
+Les contextes sont une alternatives aux props et aux stores. Supposons que vous ayez 3 composants (A, B, C). Le composant A affiche le composant B et le composant B affiche le composant C. À partir de A, on définit des variables de contexte et le composant C va pouvoir en bénéficier.
+
+C.svelte
+```html
+<script>
+    import {getContext} from 'svelte';
+    const {color, number} = getContext('favorites');
+</script>
+<div>
+    composant C.
+    <div>Votre couleur favorite est {color}</div>
+    <div>Votre nombre favoris est {number}</div>
+</div>
+```
+
+B.svelte
+```html
+<script>
+    import C from './C.svelte';
+</script>
+<div>
+    composant B.
+    <C />
+</div>
+```
+
+A.svelte
+```html
+<script>
+    import {setContext} from 'svelte';
+    import B from './B.svelte';
+    setContext('favoris', {color: 'jaune', number: 19});
+</script>
+
+<div>
+    composant A.
+    <B />
+</div>
+```
+
+Les interactions entres composants sont une pierre angulaire d'un projet avec Svelte. Si vous n'avez pas bien compris certains concepts, relisez et surtout pratiquez ! Dans le prochain cours, nous verrons comment fonctionne le mécanisme de store. 
