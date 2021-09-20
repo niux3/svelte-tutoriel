@@ -238,3 +238,23 @@ User.svelte
 	<slot name="zipcode" /><slot name="city" />
 </div>
 ```
+
+### Les événements
+
+Un composant Svelte peut utiliser n'importe quel type d'événements. À l'intérieur de la déclaration d'un événement, vous pouvez placer une référence à une méthode, mais aussi, vous pouvez directement attribuer une valeur à une variable précédemment déclarée dans le bloc <script>. Sachez aussi que vous pouvez cumuler le même type d'événement au sein d'un composant.
+
+```html
+<script>
+let uneVar = '';
+let uneAutreVar = '';
+let faitQuelqueChose = (e) => uneVar = "autre valeur";
+let faitAutreChose = (e) => uneAutreVar = "encore une valeur";
+</script>
+<UnComposant on:click={e => uneVar = "quelque chose"} />
+<UnComposant on:click={faitQuelqueChose} />
+<UnComposant on:click={faitQuelqueChose} on:click={faitAutreChose} />
+```
+
+#### le dispatch
+
+Le dispatch est un système créant un événement personnalisé. Il est très utile lorsque l'on souhaite remonter l'événement à l'élément parent.
