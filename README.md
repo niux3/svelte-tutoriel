@@ -35,3 +35,4 @@ Au travers de la liste d'articles énumérés ci-dessous, je vais vous apprendre
 - [Comment créer un composant ?](./chap-2.md)
 - [Les structures de contrôle](./chap-3.md)
 - [Ici Svelte, les composants parlent aux composants](./chap-4.md)
+- [les stores]('./chap-5.md')
