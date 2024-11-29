@@ -5,7 +5,7 @@
 <header>
     <h1 class="text-center">Todo MVC</h1>
     <form onsubmit={onAdd} class="my-5">
-        <fieldset class="border p-4">
+        <fieldset class="border py-4 pe-4">
             <legend>
                 <span>Ajouter une tâche</span>
             </legend>
