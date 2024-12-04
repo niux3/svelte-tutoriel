@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    let characterName;
+    let characterName = $state(undefined);
 
     onMount(async () => {
         const response = await fetch('https://swapi.dev/api/people/1');

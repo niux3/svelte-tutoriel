@@ -9,7 +9,7 @@
         {label: 'Violet'},
         {label: 'Rose'},
     ])
-    let onChange = e => selected = e.target.value
+    const onChange = e => selected = e.target.value
 </script>
 
 <Select options={options} onChange={onChange} />

@@ -1,5 +1,6 @@
 <script>
     let {options, onChange} = $props()
+
 </script>
 
 <div>
@@ -9,5 +10,6 @@
         {#each options as option}
             <option value={option.label}>{option.label}</option>
         {/each}
+
     </select>
 </div>
